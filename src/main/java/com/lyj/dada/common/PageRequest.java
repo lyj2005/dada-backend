@@ -1,5 +1,6 @@
 package com.lyj.dada.common;
 
+import com.lyj.dada.constant.CommonConstant;
 import lombok.Data;
 
 /**
@@ -23,5 +24,8 @@ public class PageRequest {
      */
     private String sortField;
 
-
+    /**
+     * 排序顺序（默认升序）
+     */
+    private String sortOrder = CommonConstant.SORT_ORDER_ASC;
 }

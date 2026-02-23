@@ -143,7 +143,12 @@
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
             <version>4.4.0</version>
         </dependency>
-
+<!--        将 springdoc-openapi-starter 升级到支持 Spring 6.2.x 的版本（建议 2.5.0 及以上）。-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
 
 
 
