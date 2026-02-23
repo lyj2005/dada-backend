@@ -1,0 +1,86 @@
+spring:
+  application:
+    name:dada-backend
+
+  # ?? dev ??
+  profiles:
+    active: dev
+  # ?? swagger3
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # session ??
+  session:
+    # store-type: redis
+    # 30 ???
+    timeout: 2592000
+  # ?????
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bi
+    username: root
+    password: 1234
+
+#  # Redis ??
+#  data:
+#    redis:
+#      host: 127.0.0.1
+#      database: 1
+#      port: 6379
+#      timeout: 5000
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    # ???mq?
+    listener:
+      simple:
+        auto-startup: false
+      direct:
+        auto-startup: false
+
+
+server:
+  address: 0.0.0.0
+  port: 8080
+  servlet:
+    context-path: /api
+    # cookie 30 ???
+    session:
+      cookie:
+        max-age: 2592000
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # ????????????
+      logic-delete-value: 1 # ?????????? 1?
+      logic-not-delete-value: 0 # ?????????? 0?
+
+# ??????
+knife4j:
+  enable: true
+  openapi:
+    title: "????"
+    version: 1.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - com.lyj.bi.controller
+
+# DeepSeek AI??
+deepseek:
+  api:
+    key: sk-7e70e41ac25b4cfca80b5571bda8c89b  # ???????API Key
+    base-url: https://api.deepseek.com
+    model: deepseek-chat  # ???????
+    max-tokens: 2000      # ??token?
+    temperature: 0.7      # ????
+
+
