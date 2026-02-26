@@ -149,12 +149,6 @@
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.7.0</version>
         </dependency>
-<!--        智普AI-->
-        <dependency>
-            <groupId>cn.bigmodel.openapi</groupId>
-            <artifactId>oapi-java-sdk</artifactId>
-            <version>release-V4-2.0.2</version>
-        </dependency>
         <!--  https://github.com/ben-manes/caffeine  -->
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
@@ -167,7 +161,12 @@
             <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
             <version>5.2.0</version>
         </dependency>
-
+<!--        Rxjava-->
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>2.2.21</version>
+        </dependency>
 
 
 
