@@ -2,52 +2,40 @@ spring:
   application:
     name:dada-backend
 
-  # ?? dev ??
+  # 默认 dev 环境
   profiles:
     active: dev
-  # ?? swagger3
+
+  # 支持 swagger3
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  # session ??
+  # session 配置
   session:
     # store-type: redis
-    # 30 ???
+    # 30 天过期
     timeout: 2592000
-  # ?????
+
+  # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bi
+    url: jdbc:mysql://localhost:3306/aidada
     username: root
     password: 1234
-
-#  # Redis ??
-#  data:
-#    redis:
-#      host: 127.0.0.1
-#      database: 1
-#      port: 6379
-#      timeout: 5000
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-    # ???mq?
-    listener:
-      simple:
-        auto-startup: false
-      direct:
-        auto-startup: false
+  #   Redis 配置
+  data:
+    redis:
+      database: 1
+      host: localhost
+      port: 6379
 
 
 server:
   address: 0.0.0.0
-  port: 8080
+  port: 8101
   servlet:
     context-path: /api
-    # cookie 30 ???
+    # cookie 30 天过期
     session:
       cookie:
         max-age: 2592000
@@ -58,29 +46,58 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      logic-delete-field: isDelete # ????????????
-      logic-delete-value: 1 # ?????????? 1?
-      logic-not-delete-value: 0 # ?????????? 0?
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
 
-# ??????
+# 接口文档配置
 knife4j:
   enable: true
   openapi:
-    title: "????"
+    title: "接口文档"
     version: 1.0
     group:
       default:
         api-rule: package
         api-rule-resources:
-          - com.lyj.bi.controller
-
-# DeepSeek AI??
-deepseek:
-  api:
-    key: sk-7e70e41ac25b4cfca80b5571bda8c89b  # ???????API Key
-    base-url: https://api.deepseek.com
-    model: deepseek-chat  # ???????
-    max-tokens: 2000      # ??token?
-    temperature: 0.7      # ????
+          - com.lyj.dada.controller
 
 
+# application.yml
+ai:
+  config:
+    api-key: "a5beb787db104a82a26e2aaeae53c5aa.9EsHmH0bj6jg7eCk"
+
+
+
+  # 分库分表配置
+  shardingsphere:
+    #数据源配置
+    datasource:
+      # 多数据源以逗号隔开即可
+      names: aidada
+      yudada:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/aidada
+        username: root
+        password: 1234
+    # 规则配置
+    rules:
+      sharding:
+        # 分片算法配置
+        sharding-algorithms:
+          # 自定义分片规则名
+          answer-table-inline:
+            ## inline 类型是简单的配置文件里面就能写的类型，其他还有自定义类等等
+            type: INLINE
+            props:
+              algorithm-expression: user_answer_$->{appId % 2}
+        tables:
+          user_answer:
+            actual-data-nodes: dada.user_answer_$->{0..1}
+            # 分表策略
+            table-strategy:
+              standard:
+                sharding-column: appId
+                sharding-algorithm-name: answer-table-inline

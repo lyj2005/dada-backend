@@ -7,25 +7,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 用户角色枚举
- */
-public enum UserRoleEnum {
+ * 文件上传业务类型枚举
+  */
+public enum FileUploadBizEnum {
 
-    //1. 定义字段
-    USER("用户", "user"),
-    ADMIN("管理员", "admin"),
-    BAN("被封号", "ban");
+    USER_AVATAR("用户头像", "user_avatar"),
+    APP_ICON("应用图标", "app_icon"),
+    SCORING_RESULT_PICTURE("评分结果图片", "scoring_result_picture");
 
-    //2. 定义构造器
     private final String text;
     private final String value;
-    UserRoleEnum(String text, String value) {
+    FileUploadBizEnum(String text, String value) {
         this.text = text;
         this.value = value;
     }
 
     /**
-     * 3. 获取值列表
+     * 获取值列表
      *
      * @return
      */
@@ -34,16 +32,16 @@ public enum UserRoleEnum {
     }
 
     /**
-     * 4. 根据 value 获取枚举
+     * 根据 value 获取枚举
      *
      * @param value
      * @return
      */
-    public static UserRoleEnum getEnumByValue(String value) {
+    public static FileUploadBizEnum getEnumByValue(String value) {
         if (ObjectUtils.isEmpty(value)) {
             return null;
         }
-        for (UserRoleEnum anEnum : UserRoleEnum.values()) {
+        for (FileUploadBizEnum anEnum : FileUploadBizEnum.values()) {
             if (anEnum.value.equals(value)) {
                 return anEnum;
             }
@@ -51,12 +49,13 @@ public enum UserRoleEnum {
         return null;
     }
 
-    //5. get方法
     public String getValue() {
         return value;
     }
     public String getText() {
         return text;
     }
+
+
 
 }

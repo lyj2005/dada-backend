@@ -17,7 +17,6 @@ public enum ReviewStatusEnum {
     REJECT("拒绝", 2);
 
     private final String text;
-
     private final int value;
 
     ReviewStatusEnum(String text, int value) {

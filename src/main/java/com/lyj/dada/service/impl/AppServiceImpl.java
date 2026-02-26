@@ -71,7 +71,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             AppScoringStrategyEnum scoringStrategyEnum = AppScoringStrategyEnum.getEnumByValue(scoringStrategy);
             ThrowUtils.throwIf(scoringStrategyEnum == null, ErrorCode.PARAMS_ERROR, "应用评分策略非法");
         }
-        // 修改数据时，有参数则校验
+        //4. 修改数据时，有参数则校验
         // 补充校验规则
         if (StringUtils.isNotBlank(appName)) {
             ThrowUtils.throwIf(appName.length() > 80, ErrorCode.PARAMS_ERROR, "应用名称要小于 80");
@@ -111,7 +111,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         String sortField = appQueryRequest.getSortField();
         String sortOrder = appQueryRequest.getSortOrder();
 
-        // 补充需要的查询条件
+        // 3. 补充需要的查询条件
         // 从多字段中搜索
         if (StringUtils.isNotBlank(searchText)) {
             // 需要拼接查询条件
@@ -134,6 +134,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         queryWrapper.orderBy(SqlUtils.validSortField(sortField),
                 sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
+        //4. 返回结果
         return queryWrapper;
     }
 
@@ -146,10 +147,10 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
      */
     @Override
     public AppVO getAppVO(App app, HttpServletRequest request) {
-        // 对象转封装类
+        //1.  对象转封装类
         AppVO appVO = AppVO.objToVo(app);
 
-        // 可以根据需要为封装对象补充值，不需要的内容可以删除
+        //2.  可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
         // 1. 关联查询用户信息
         Long userId = app.getUserId();
@@ -160,6 +161,8 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         UserVO userVO = userService.getUserVO(user);
         appVO.setUser(userVO);
         // endregion
+
+        //3. 返回结果
         return appVO;
     }
 
@@ -172,17 +175,18 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
      */
     @Override
     public Page<AppVO> getAppVOPage(Page<App> appPage, HttpServletRequest request) {
+        //1. 创建封装类
         List<App> appList = appPage.getRecords();
         Page<AppVO> appVOPage = new Page<>(appPage.getCurrent(), appPage.getSize(), appPage.getTotal());
         if (CollUtil.isEmpty(appList)) {
             return appVOPage;
         }
-        // 对象列表 => 封装对象列表
+        //2. 对象列表 => 封装对象列表
         List<AppVO> appVOList = appList.stream().map(app -> {
             return AppVO.objToVo(app);
         }).collect(Collectors.toList());
 
-        // 可以根据需要为封装对象补充值，不需要的内容可以删除
+        //3.  可以根据需要为封装对象补充值，不需要的内容可以删除
         // region 可选
         // 1. 关联查询用户信息
         Set<Long> userIdSet = appList.stream().map(App::getUserId).collect(Collectors.toSet());
@@ -198,9 +202,14 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             appVO.setUser(userService.getUserVO(user));
         });
         // endregion
-
         appVOPage.setRecords(appVOList);
+
+        //4. 返回结果
         return appVOPage;
     }
+
+
+
+
 
 }

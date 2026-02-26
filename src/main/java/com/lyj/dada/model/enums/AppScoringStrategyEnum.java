@@ -16,7 +16,6 @@ public enum AppScoringStrategyEnum {
     AI("AI", 1);
 
     private final String text;
-
     private final int value;
 
     AppScoringStrategyEnum(String text, int value) {

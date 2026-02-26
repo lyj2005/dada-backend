@@ -16,7 +16,6 @@ public enum AppTypeEnum {
     TEST("测评类", 1);
 
     private final String text;
-
     private final int value;
 
     AppTypeEnum(String text, int value) {
